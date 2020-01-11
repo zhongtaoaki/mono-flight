@@ -1,0 +1,1 @@
+insert into flight_reservation values(1,'HND','2020-05-01 12:00:00','KIX','2020-05-01','2020-05-01 10:30:00','ANA001','23F')
