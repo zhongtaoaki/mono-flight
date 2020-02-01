@@ -1,8 +1,10 @@
 package com.example.msasample.mono.flight.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.msasample.mono.flight.model.FlightApplicationInfo;
 import com.example.msasample.mono.flight.model.entities.FlightReservation;
@@ -26,16 +28,28 @@ public class FlightReserveService {
 	 * @param FlightApplicationInfo
 	 * @return FlightReservation
 	 */
+	@Transactional
 	public FlightReservation reserveFlight(FlightApplicationInfo flightApplicationInfo) {
 
-		FlightReservation example = FlightReservation.builder()//
+		if (flightReservationRepository.count() > 5) {
+			throw new RuntimeException("満席です。");
+		}
+
+		FlightReservation flightReservation = FlightReservation.builder()//
 				.flightName(flightApplicationInfo.getFlightName())//
 				.departureDate(flightApplicationInfo.getDepartureDate())//
-				.build();
+				.departureDateTime(LocalDateTime.now())//
+				.arrivalDateTime(LocalDateTime.now())//
+				.departureAirport("HND")//
+				.arrivalAirport("KIX")//
+				.seatNo("A001").build();
 
-		Example<FlightReservation> exampleFlight = Example.of(example);
-		
-		return flightReservationRepository.findOne(exampleFlight).orElseThrow();
+		return flightReservationRepository.saveAndFlush(flightReservation);
 
+	}
+
+	@Transactional
+	public void cancelFlight(Long id) {
+		flightReservationRepository.deleteById(id);
 	}
 }
