@@ -33,7 +33,9 @@ public class FlightReserveService {
 				.departureDate(flightApplicationInfo.getDepartureDate())//
 				.build();
 
-		return flightReservationRepository.findOne(Example.of(example)).orElseThrow();
+		Example<FlightReservation> exampleFlight = Example.of(example);
+		
+		return flightReservationRepository.findOne(exampleFlight).orElseThrow();
 
 	}
 }
