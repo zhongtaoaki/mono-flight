@@ -38,4 +38,9 @@ public class FlightReserveService {
 		return flightReservationRepository.findOne(exampleFlight).orElseThrow();
 
 	}
+	
+	public void deleteFlight(Long flightReservationId) {
+		flightReservationRepository.deleteById(flightReservationId);
+	}
+	
 }
