@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight
+  labels:
+    app: flight
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flight
+  template:
+    metadata:
+      labels:
+        app: flight
+    spec:
+      containers:
+      - name: flight
+        image: 「ECRに実際に存在するイメージID」
+        ports:
+        - containerPort: 8080
